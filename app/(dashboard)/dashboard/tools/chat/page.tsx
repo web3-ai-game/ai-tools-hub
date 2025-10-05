@@ -13,10 +13,13 @@ import {
   Plus,
   Settings,
   Trash2,
-  MessageSquare
+  MessageSquare,
+  ArrowLeft
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import Link from 'next/link';
+import { chatConfig } from '@/config/chat';
 
 interface Message {
   id: string;
@@ -72,8 +75,8 @@ export default function ChatPage() {
     setIsLoading(true);
 
     try {
-      // Call Gemini API
-      const response = await fetch('/api/chat/gemini', {
+      // Call Chat API (can be customized via chatConfig)
+      const response = await fetch(chatConfig.apiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -167,6 +170,18 @@ export default function ChatPage() {
         animate={{ x: 0, opacity: 1 }}
         className="w-64 flex flex-col gap-2"
       >
+        {/* Back to Home Button */}
+        <Button
+          variant="outline"
+          className="w-full justify-start gap-2"
+          asChild
+        >
+          <Link href="/">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Link>
+        </Button>
+
         <Button
           onClick={createNewChat}
           className="w-full justify-start gap-2"
@@ -232,10 +247,10 @@ export default function ChatPage() {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold mb-2">
-                      Mini Gemini Chat
+                      {chatConfig.ui.welcomeMessage}
                     </h2>
                     <p className="text-muted-foreground">
-                      How can I help you today?
+                      {chatConfig.ui.welcomeSubtitle}
                     </p>
                   </div>
                 </div>
@@ -325,7 +340,7 @@ export default function ChatPage() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Send a message..."
+                  placeholder={chatConfig.ui.inputPlaceholder}
                   className="min-h-[60px] max-h-[200px] resize-none pr-12"
                   disabled={isLoading}
                 />
@@ -344,7 +359,7 @@ export default function ChatPage() {
               </div>
             </form>
             <p className="text-xs text-muted-foreground text-center mt-2">
-              Mini Gemini can make mistakes. Check important info.
+              {chatConfig.ui.footerText}
             </p>
           </div>
         </Card>

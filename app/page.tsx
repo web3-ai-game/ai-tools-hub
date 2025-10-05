@@ -10,16 +10,24 @@ import {
   FileText,
   Zap,
   Shield,
-  Globe,
   ArrowRight,
   Check,
   Star,
   BookOpen,
   Workflow,
+  MessageSquare,
 } from 'lucide-react';
 
 export default function Home() {
   const features = [
+    {
+      icon: MessageSquare,
+      title: 'Mini Gemini Chat',
+      description: 'Chat with our custom-tuned Gemini AI. Get instant answers, creative ideas, code help, and more. Your personal AI assistant is ready to help 24/7.',
+      price: 'Free to try',
+      href: '/dashboard/tools/chat',
+      featured: true,
+    },
     {
       icon: Image,
       title: 'AI Image Generation',
@@ -137,11 +145,21 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
             {features.map((feature) => {
               const Icon = feature.icon;
               return (
-                <Card key={feature.title} className="relative overflow-hidden p-6 hover:shadow-lg transition-shadow">
+                <Card 
+                  key={feature.title} 
+                  className={`relative overflow-hidden p-6 hover:shadow-lg transition-shadow ${
+                    feature.featured ? 'border-2 border-primary md:col-span-2 lg:col-span-1 lg:row-span-2' : ''
+                  }`}
+                >
+                  {feature.featured && (
+                    <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full font-medium">
+                      New!
+                    </div>
+                  )}
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                     <Icon className="h-6 w-6 text-primary" />
                   </div>
