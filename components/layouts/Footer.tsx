@@ -35,22 +35,25 @@ export default function Footer() {
     { icon: Github, href: 'https://github.com', label: 'GitHub' },
     { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
     { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:support@aitoolshub.com', label: 'Email' },
+    { icon: Mail, href: 'mailto:support@oece.tech', label: 'Email' },
   ];
 
   return (
     <footer className="bg-background border-t">
-      <div className="container py-12 md:py-16">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <Sparkles className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">AI Tools Hub</span>
+              <span className="font-bold text-xl">OECE</span>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
-              Professional AI tools for content creation. Generate images, videos, and content with the power of AI.
+              AI赋能教育培训平台。智能备课、创建评估、提升学习成果。
+            </p>
+            <p className="text-xs text-muted-foreground/80 mb-4 italic">
+              oece.tech - AI-powered education platform
             </p>
             {/* Social Links */}
             <div className="flex space-x-3">
@@ -93,8 +96,8 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-sm text-muted-foreground">
-              © {currentYear} AI Tools Hub. All rights reserved.
+            <div className="text-sm text-muted-foreground text-center md:text-left">
+              © {currentYear} OECE. All rights reserved.
             </div>
             <div className="flex space-x-6 text-sm text-muted-foreground">
               <Link href="/privacy" className="hover:text-foreground transition-colors">

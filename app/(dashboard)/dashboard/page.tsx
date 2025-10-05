@@ -13,69 +13,63 @@ import {
   CreditCard,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useUserStore } from '@/lib/store/user-store';
+import { useMemo } from 'react';
 
 export default function DashboardPage() {
-  const stats = [
+  const { balance, totalSpent, usageRecords, getTotalUsageCount, getUsageByType } = useUserStore();
+
+  const stats = useMemo(() => [
     {
       title: 'Total Credits',
-      value: '$25.50',
-      change: '+$10.00',
+      value: `$${balance.toFixed(2)}`,
+      change: `$${totalSpent > 0 ? totalSpent.toFixed(2) : '0.00'} spent`,
       changeType: 'positive',
       icon: DollarSign,
     },
     {
       title: 'Images Generated',
-      value: '147',
-      change: '+23',
+      value: getTotalUsageCount('image').toString(),
+      change: `$${getUsageByType('image').toFixed(2)} spent`,
       changeType: 'positive',
       icon: Image,
     },
     {
       title: 'Videos Created',
-      value: '32',
-      change: '+5',
+      value: getTotalUsageCount('video').toString(),
+      change: `$${getUsageByType('video').toFixed(2)} spent`,
       changeType: 'positive',
       icon: Video,
     },
     {
       title: 'Content Written',
-      value: '89',
-      change: '+12',
+      value: (getTotalUsageCount('content') + getTotalUsageCount('copywriter')).toString(),
+      change: `$${(getUsageByType('content') + getUsageByType('copywriter')).toFixed(2)} spent`,
       changeType: 'positive',
       icon: FileText,
     },
-  ];
+  ], [balance, totalSpent, getTotalUsageCount, getUsageByType]);
 
-  const recentGenerations = [
-    {
-      id: 1,
-      type: 'image',
-      title: 'Sunset landscape with mountains',
-      cost: 0.5,
-      date: '2 hours ago',
-    },
-    {
-      id: 2,
-      type: 'content',
-      title: 'Blog post about AI technology',
-      cost: 1.2,
-      date: '5 hours ago',
-    },
-    {
-      id: 3,
-      type: 'video',
-      title: 'Product demo animation',
-      cost: 2.0,
-      date: '1 day ago',
-    },
-    {
-      id: 4,
-      type: 'image',
-      title: 'Abstract art composition',
-      cost: 0.5,
-      date: '2 days ago',
-    },
-  ];
+  const recentGenerations = useMemo(() => {
+    const formatDate = (date: Date) => {
+      const now = new Date();
+      const diff = now.getTime() - date.getTime();
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const days = Math.floor(hours / 24);
+
+      if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+      if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      return 'Just now';
+    };
+
+    return usageRecords.slice(0, 4).map(record => ({
+      id: record.id,
+      type: record.type,
+      title: record.title,
+      cost: record.cost,
+      date: formatDate(record.createdAt),
+    }));
+  }, [usageRecords]);
 
   const quickActions = [
     {
@@ -235,50 +229,50 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>Usage Overview</CardTitle>
             <CardDescription>
-              Your credit usage this month
+              Your credit usage statistics
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Images</span>
+                  <span className="text-sm font-medium">Images ({getTotalUsageCount('image')})</span>
                   <span className="text-sm text-muted-foreground">
-                    $73.50
+                    ${getUsageByType('image').toFixed(2)}
                   </span>
                 </div>
                 <div className="h-2 bg-secondary rounded-full overflow-hidden">
                   <div
                     className="h-full bg-blue-500"
-                    style={{ width: '45%' }}
+                    style={{ width: `${totalSpent > 0 ? Math.min(100, (getUsageByType('image') / totalSpent) * 100) : 0}%` }}
                   />
                 </div>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Videos</span>
+                  <span className="text-sm font-medium">Videos ({getTotalUsageCount('video')})</span>
                   <span className="text-sm text-muted-foreground">
-                    $64.00
+                    ${getUsageByType('video').toFixed(2)}
                   </span>
                 </div>
                 <div className="h-2 bg-secondary rounded-full overflow-hidden">
                   <div
                     className="h-full bg-purple-500"
-                    style={{ width: '35%' }}
+                    style={{ width: `${totalSpent > 0 ? Math.min(100, (getUsageByType('video') / totalSpent) * 100) : 0}%` }}
                   />
                 </div>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Content</span>
+                  <span className="text-sm font-medium">Content ({getTotalUsageCount('content') + getTotalUsageCount('copywriter')})</span>
                   <span className="text-sm text-muted-foreground">
-                    $17.80
+                    ${(getUsageByType('content') + getUsageByType('copywriter')).toFixed(2)}
                   </span>
                 </div>
                 <div className="h-2 bg-secondary rounded-full overflow-hidden">
                   <div
                     className="h-full bg-green-500"
-                    style={{ width: '20%' }}
+                    style={{ width: `${totalSpent > 0 ? Math.min(100, ((getUsageByType('content') + getUsageByType('copywriter')) / totalSpent) * 100) : 0}%` }}
                   />
                 </div>
               </div>
@@ -287,10 +281,10 @@ export default function DashboardPage() {
             <div className="mt-6 pt-6 border-t">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Total Spent</span>
-                <span className="text-2xl font-bold">$155.30</span>
+                <span className="text-2xl font-bold">${totalSpent.toFixed(2)}</span>
               </div>
               <p className="text-sm text-muted-foreground mt-1">
-                <span className="text-green-600">↑ 12%</span> from last month
+                Remaining balance: <span className="font-semibold text-primary">${balance.toFixed(2)}</span>
               </p>
             </div>
 

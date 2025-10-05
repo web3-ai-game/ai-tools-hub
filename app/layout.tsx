@@ -11,57 +11,57 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "AI Tools Hub - Professional AI Content Creation Tools",
-    template: "%s | AI Tools Hub",
+    default: "OECE - AI赋能教育培训平台 | AI-Powered Education Platform",
+    template: "%s | OECE",
   },
-  description: "Generate stunning images, videos, and content with cutting-edge AI technology. Professional tools for creators and businesses.",
+  description: "使用 Google Gemini AI 为教育工作者赋能。智能备课、创建评估、提升学习成果。AI-powered education tools for teachers and training professionals.",
   keywords: [
-    "AI image generator",
-    "AI video creator",
-    "AI content writer",
-    "artificial intelligence",
-    "machine learning",
-    "content creation",
+    "AI教育",
+    "AI教学助手",
+    "教案生成器",
+    "智能备课",
+    "教育培训",
+    "AI education",
+    "teaching assistant",
+    "lesson planning",
+    "OECE",
   ],
-  authors: [{ name: "AI Tools Hub" }],
-  creator: "AI Tools Hub",
-  publisher: "AI Tools Hub",
+  authors: [{ name: "OECE" }],
+  creator: "OECE",
+  publisher: "OECE",
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://aitoolshub.com",
-    siteName: "AI Tools Hub",
-    title: "AI Tools Hub - Professional AI Content Creation Tools",
-    description: "Generate stunning images, videos, and content with cutting-edge AI technology.",
+    locale: "zh_CN",
+    url: "https://oece.tech",
+    siteName: "OECE",
+    title: "OECE - AI赋能教育培训平台",
+    description: "使用 Google Gemini AI 为教育工作者赋能。智能备课、创建评估、提升学习成果。",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "AI Tools Hub",
+        alt: "OECE",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Tools Hub - Professional AI Content Creation Tools",
-    description: "Generate stunning images, videos, and content with cutting-edge AI technology.",
+    title: "OECE - AI赋能教育培训平台",
+    description: "使用 Google Gemini AI 为教育工作者赋能。",
     images: ["/og-image.jpg"],
-    creator: "@aitoolshub",
+    creator: "@oece_tech",
   },
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
     googleBot: {
-      index: true,
-      follow: true,
+      index: false,
+      follow: false,
       "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,
     },
-  },
-  verification: {
-    google: "google-site-verification-code",
   },
 };
 
@@ -71,8 +71,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-background font-sans antialiased">
+    <html lang="zh-CN" className={inter.variable} translate="no">
+      <head>
+        <meta name="google" content="notranslate" />
+      </head>
+      <body className="min-h-screen bg-background font-sans antialiased" translate="no">
         {children}
         <Toaster richColors closeButton position="bottom-right" />
       </body>

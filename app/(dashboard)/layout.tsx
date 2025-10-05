@@ -31,6 +31,7 @@ import {
   BarChart,
   PenTool,
 } from 'lucide-react';
+import { useUserStore } from '@/lib/store/user-store';
 
 export default function DashboardLayout({
   children,
@@ -39,6 +40,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { balance } = useUserStore();
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -85,9 +87,11 @@ export default function DashboardLayout({
           <CreditCard className="h-5 w-5 text-primary" />
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium">Credits Balance</p>
-            <p className="text-2xl font-bold">$25.50</p>
+            <p className="text-2xl font-bold">${balance.toFixed(2)}</p>
           </div>
-          <Button size="sm">Add Credits</Button>
+          <Button size="sm" asChild>
+            <Link href="/dashboard/billing">Add Credits</Link>
+          </Button>
         </div>
       </div>
     </div>
