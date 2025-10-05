@@ -45,7 +45,7 @@ export default function LoginPage() {
       
       // Redirect to dashboard after successful login
       router.push('/dashboard');
-    } catch (err) {
+    } catch {
       setError('Invalid email or password. Please try again.');
     } finally {
       setIsLoading(false);
@@ -64,7 +64,7 @@ export default function LoginPage() {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       
       router.push('/dashboard');
-    } catch (err) {
+    } catch {
       setError('Failed to sign in with Google. Please try again.');
     } finally {
       setIsLoading(false);
@@ -186,7 +186,7 @@ export default function LoginPage() {
 
         <CardFooter className="flex flex-col space-y-2">
           <div className="text-sm text-muted-foreground text-center">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/auth/register" className="text-primary hover:underline">
               Sign up
             </Link>

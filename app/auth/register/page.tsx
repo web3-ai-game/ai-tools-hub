@@ -64,7 +64,7 @@ export default function RegisterPage() {
       
       // Redirect to dashboard after successful registration
       router.push('/dashboard');
-    } catch (err) {
+    } catch {
       setError('Failed to create account. Please try again.');
     } finally {
       setIsLoading(false);
@@ -83,7 +83,7 @@ export default function RegisterPage() {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       
       router.push('/dashboard');
-    } catch (err) {
+    } catch {
       setError('Failed to sign up with Google. Please try again.');
     } finally {
       setIsLoading(false);

@@ -12,22 +12,28 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-let app: FirebaseApp;
-let auth: Auth;
-let db: Firestore;
-let storage: FirebaseStorage;
+// Check if Firebase config is valid
+const isFirebaseConfigured = !!(
+  firebaseConfig.apiKey && 
+  firebaseConfig.authDomain && 
+  firebaseConfig.projectId
+);
 
-if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
+let app: FirebaseApp | undefined;
+let auth: Auth | undefined;
+let db: Firestore | undefined;
+let storage: FirebaseStorage | undefined;
+
+if (isFirebaseConfigured) {
+  app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
 } else {
-  app = getApps()[0];
+  console.warn('Firebase is not configured - Firebase features will be disabled');
 }
 
-auth = getAuth(app);
-db = getFirestore(app);
-storage = getStorage(app);
-
-export { app, auth, db, storage };
+export { app, auth, db, storage, isFirebaseConfigured };
 
 // Helper functions for Firestore
 import { 
@@ -51,7 +57,8 @@ import {
 
 export const dbHelpers = {
   // Create or update a document
-  async setDocument(collectionName: string, docId: string, data: any) {
+  async setDocument(collectionName: string, docId: string, data: DocumentData) {
+    if (!db) throw new Error('Firebase is not configured');
     const docRef = doc(db, collectionName, docId);
     await setDoc(docRef, {
       ...data,
@@ -62,6 +69,7 @@ export const dbHelpers = {
 
   // Get a single document
   async getDocument(collectionName: string, docId: string) {
+    if (!db) throw new Error('Firebase is not configured');
     const docRef = doc(db, collectionName, docId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -71,7 +79,8 @@ export const dbHelpers = {
   },
 
   // Add a new document
-  async addDocument(collectionName: string, data: any) {
+  async addDocument(collectionName: string, data: DocumentData) {
+    if (!db) throw new Error('Firebase is not configured');
     const colRef = collection(db, collectionName);
     const docRef = await addDoc(colRef, {
       ...data,
@@ -86,6 +95,7 @@ export const dbHelpers = {
     collectionName: string, 
     constraints: QueryConstraint[]
   ) {
+    if (!db) throw new Error('Firebase is not configured');
     const colRef = collection(db, collectionName);
     const q = query(colRef, ...constraints);
     const querySnapshot = await getDocs(q);
@@ -97,7 +107,8 @@ export const dbHelpers = {
   },
 
   // Update a document
-  async updateDocument(collectionName: string, docId: string, data: any) {
+  async updateDocument(collectionName: string, docId: string, data: DocumentData) {
+    if (!db) throw new Error('Firebase is not configured');
     const docRef = doc(db, collectionName, docId);
     await updateDoc(docRef, {
       ...data,
@@ -107,6 +118,7 @@ export const dbHelpers = {
 
   // Delete a document
   async deleteDocument(collectionName: string, docId: string) {
+    if (!db) throw new Error('Firebase is not configured');
     const docRef = doc(db, collectionName, docId);
     await deleteDoc(docRef);
   },

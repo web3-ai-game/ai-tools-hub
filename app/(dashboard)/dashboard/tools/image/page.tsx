@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -27,7 +26,13 @@ interface ImageGenerationForm {
 export default function ImageGenerationPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [imageHistory, setImageHistory] = useState<any[]>([]);
+  const [imageHistory, setImageHistory] = useState<Array<{
+    id: string;
+    url: string;
+    prompt: string;
+    timestamp: string;
+    cost: number;
+  }>>([]);
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<ImageGenerationForm>({
     defaultValues: {
@@ -74,7 +79,7 @@ export default function ImageGenerationPage() {
       
       // Add to history
       setImageHistory(prev => [{
-        id: Date.now(),
+        id: Date.now().toString(),
         url: result.imageUrl,
         prompt: data.prompt,
         timestamp: new Date().toISOString(),
@@ -82,7 +87,7 @@ export default function ImageGenerationPage() {
       }, ...prev].slice(0, 4));
 
       toast.success('Image generated successfully!');
-    } catch (error) {
+    } catch {
       toast.error('Failed to generate image. Please try again.');
     } finally {
       setIsGenerating(false);
@@ -250,9 +255,10 @@ export default function ImageGenerationPage() {
               {generatedImage ? (
                 <div className="space-y-4">
                   <div className="relative aspect-square w-full overflow-hidden rounded-lg border">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={generatedImage}
-                      alt="Generated"
+                      alt="Generated image result"
                       className="h-full w-full object-cover"
                     />
                   </div>
@@ -291,6 +297,7 @@ export default function ImageGenerationPage() {
                       className="group relative aspect-square overflow-hidden rounded-lg border cursor-pointer hover:shadow-md transition-shadow"
                       onClick={() => setGeneratedImage(item.url)}
                     >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={item.url}
                         alt={item.prompt}

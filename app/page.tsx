@@ -210,7 +210,7 @@ export default function Home() {
                     <Star key={i} className="h-4 w-4 fill-primary text-primary" />
                   ))}
                 </div>
-                <p className="mb-4 text-muted-foreground italic">"{testimonial.content}"</p>
+                <p className="mb-4 text-muted-foreground italic">&quot;{testimonial.content}&quot;</p>
                 <div>
                   <p className="font-semibold">{testimonial.name}</p>
                   <p className="text-sm text-muted-foreground">{testimonial.role}</p>

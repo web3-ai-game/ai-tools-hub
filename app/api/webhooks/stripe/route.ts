@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 
         // Update payment status
         const payments = await dbHelpers.queryDocuments('payments', [
-          // @ts-ignore - where is imported from firebase
+          // @ts-expect-error - where is imported from firebase
           where('stripePaymentIntentId', '==', paymentIntent.id),
         ]);
 
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
         
         // Update payment status
         const payments = await dbHelpers.queryDocuments('payments', [
-          // @ts-ignore
+          // @ts-expect-error - where is imported from firebase
           where('stripePaymentIntentId', '==', paymentIntent.id),
         ]);
 
@@ -95,16 +95,17 @@ export async function POST(request: NextRequest) {
         
         // Find user by Stripe customer ID
         const users = await dbHelpers.queryDocuments('users', [
-          // @ts-ignore
+          // @ts-expect-error - where is imported from firebase
           where('stripeCustomerId', '==', customerId),
         ]);
 
         if (users.length > 0) {
           const user = users[0];
+          const currentPeriodEnd = (subscription as { current_period_end?: number }).current_period_end;
           await dbHelpers.updateDocument('users', user.id, {
             subscriptionStatus: subscription.status,
             subscriptionId: subscription.id,
-            subscriptionEndDate: new Date(subscription.current_period_end * 1000),
+            subscriptionEndDate: currentPeriodEnd ? new Date(currentPeriodEnd * 1000) : null,
           });
         }
         break;
@@ -116,7 +117,7 @@ export async function POST(request: NextRequest) {
         
         // Find user by Stripe customer ID
         const users = await dbHelpers.queryDocuments('users', [
-          // @ts-ignore
+          // @ts-expect-error - where is imported from firebase
           where('stripeCustomerId', '==', customerId),
         ]);
 

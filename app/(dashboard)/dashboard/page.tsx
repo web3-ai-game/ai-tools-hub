@@ -8,7 +8,6 @@ import {
   Image,
   Video,
   FileText,
-  TrendingUp,
   DollarSign,
   Activity,
   CreditCard,
@@ -119,7 +118,7 @@ export default function DashboardPage() {
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Welcome back!</h2>
         <p className="text-muted-foreground">
-          Here's an overview of your AI Tools Hub activity
+          Here&apos;s an overview of your AI Tools Hub activity
         </p>
       </div>
 

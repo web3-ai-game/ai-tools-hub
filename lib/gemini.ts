@@ -10,11 +10,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 export const geminiClient = {
   // Generate image using Gemini
-  async generateImage(prompt: string, options?: {
-    width?: number;
-    height?: number;
-    quality?: 'standard' | 'hd';
-  }) {
+  async generateImage(prompt: string) {
     try {
       // Note: Gemini doesn't directly generate images yet
       // This is a placeholder for when image generation is available

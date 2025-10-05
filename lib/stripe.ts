@@ -1,17 +1,20 @@
 import Stripe from 'stripe';
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing STRIPE_SECRET_KEY');
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+
+if (!STRIPE_SECRET_KEY && process.env.NODE_ENV === 'production') {
+  console.warn('Missing STRIPE_SECRET_KEY - Stripe features will be disabled');
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+export const stripe = STRIPE_SECRET_KEY ? new Stripe(STRIPE_SECRET_KEY, {
   apiVersion: '2025-09-30.clover',
   typescript: true,
-});
+}) : null;
 
 export const stripeClient = {
   // Create a payment intent
   async createPaymentIntent(amount: number, currency: string = 'usd', metadata?: Record<string, string>) {
+    if (!stripe) throw new Error('Stripe is not configured');
     try {
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100), // Convert to cents
@@ -36,6 +39,7 @@ export const stripeClient = {
     cancelUrl: string,
     metadata?: Record<string, string>
   ) {
+    if (!stripe) throw new Error('Stripe is not configured');
     try {
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -55,6 +59,7 @@ export const stripeClient = {
 
   // Create a subscription
   async createSubscription(customerId: string, priceId: string) {
+    if (!stripe) throw new Error('Stripe is not configured');
     try {
       const subscription = await stripe.subscriptions.create({
         customer: customerId,
@@ -72,6 +77,7 @@ export const stripeClient = {
 
   // Create a customer
   async createCustomer(email: string, metadata?: Record<string, string>) {
+    if (!stripe) throw new Error('Stripe is not configured');
     try {
       const customer = await stripe.customers.create({
         email,
@@ -87,6 +93,7 @@ export const stripeClient = {
 
   // Get customer by email
   async getCustomerByEmail(email: string) {
+    if (!stripe) throw new Error('Stripe is not configured');
     try {
       const customers = await stripe.customers.list({
         email,
@@ -102,6 +109,7 @@ export const stripeClient = {
 
   // Cancel subscription
   async cancelSubscription(subscriptionId: string) {
+    if (!stripe) throw new Error('Stripe is not configured');
     try {
       const subscription = await stripe.subscriptions.cancel(subscriptionId);
       return subscription;
@@ -113,6 +121,7 @@ export const stripeClient = {
 
   // Verify webhook signature
   verifyWebhookSignature(payload: string | Buffer, signature: string, secret: string) {
+    if (!stripe) throw new Error('Stripe is not configured');
     try {
       return stripe.webhooks.constructEvent(payload, signature, secret);
     } catch (error) {
