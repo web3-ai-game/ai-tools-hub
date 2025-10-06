@@ -44,7 +44,7 @@ export interface UsageRecord {
   cost: number;
   credits: number;
   timestamp: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface Billing {

@@ -17,7 +17,10 @@ const eslintConfig = [
       ".next/**",
       "out/**",
       "build/**",
+      "dist/**",
       "next-env.d.ts",
+      "mcp-gateway/dist/**",
+      "mcp-gateway/test-gateway.js",
     ],
   },
 ];
