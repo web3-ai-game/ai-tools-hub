@@ -199,13 +199,13 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                       {item.type === 'image' && (
-                        <Image className="h-5 w-5 text-primary" />
+                        <Image className="h-5 w-5 text-primary" alt="" />
                       )}
                       {item.type === 'video' && (
-                        <Video className="h-5 w-5 text-primary" />
+                        <Video className="h-5 w-5 text-primary" alt="" />
                       )}
                       {item.type === 'content' && (
-                        <FileText className="h-5 w-5 text-primary" />
+                        <FileText className="h-5 w-5 text-primary" alt="" />
                       )}
                     </div>
                     <div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
@@ -37,7 +38,7 @@ export default function ImageGenPage() {
       } else {
         toast.error(data.error || 'Generation failed');
       }
-    } catch (error) {
+    } catch {
       toast.error('Network error');
     } finally {
       setLoading(false);
@@ -87,10 +88,11 @@ export default function ImageGenPage() {
       {imageUrl && (
         <Card className="p-6 space-y-4">
           <div className="aspect-video relative rounded-lg overflow-hidden bg-muted">
-            <img 
-              src={imageUrl} 
-              alt="Generated" 
-              className="w-full h-full object-cover"
+            <Image
+              src={imageUrl}
+              alt="Generated image"
+              fill
+              className="object-cover"
             />
           </div>
           <Button variant="outline" className="w-full">

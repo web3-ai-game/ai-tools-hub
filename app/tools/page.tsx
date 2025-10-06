@@ -386,13 +386,6 @@ export default function ToolsPage() {
     },
   ];
 
-  const stats = [
-    { label: '工具总数', labelEn: 'Total Tools', value: '35+', icon: Zap },
-    { label: '活跃工具', labelEn: 'Active Tools', value: '28', icon: Sparkles },
-    { label: '即将上线', labelEn: 'Coming Soon', value: '7', icon: Clock },
-    { label: '每日更新', labelEn: 'Daily Updates', value: '∞', icon: TrendingUp },
-  ];
-
   return (
     <div className="w-full">
       {/* Header */}

@@ -68,11 +68,12 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
       model: 'gemini-1.5-flash',
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Chat API error:', error);
-    
+
     // 处理特定错误
-    if (error.message?.includes('quota')) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage.includes('quota')) {
       return NextResponse.json(
         { error: '已达到API使用限额，请稍后重试' },
         { status: 429 }

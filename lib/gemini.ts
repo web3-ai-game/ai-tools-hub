@@ -8,10 +8,10 @@ export async function generateText(prompt: string) {
   return result.response.text();
 }
 
-export async function generateContent(prompt: string, options?: any) {
-  const model = genAI.getGenerativeModel({ 
+export async function generateContent(prompt: string, options?: Record<string, unknown>) {
+  const model = genAI.getGenerativeModel({
     model: 'gemini-1.5-pro',
-    ...options 
+    ...options
   });
   
   const result = await model.generateContent(prompt);

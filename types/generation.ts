@@ -8,7 +8,7 @@ export interface GenerationRequest {
   wordCount?: number;
   duration?: number;
   userId: string;
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
 }
 
 export interface GenerationResult {

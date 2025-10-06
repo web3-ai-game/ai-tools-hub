@@ -35,7 +35,7 @@ export default function Header() {
 
   const navigation = [
     { name: t.nav.home, href: '/' },
-    { name: t.nav.tools, href: '/tools' },
+    { name: t.nav.tools, href: '/tools-showcase' },
     { name: t.nav.pricing, href: '/pricing' },
     { name: t.nav.about, href: '/about' },
   ];

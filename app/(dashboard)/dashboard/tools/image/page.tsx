@@ -270,7 +270,7 @@ export default function ImageGenerationPage() {
               ) : (
                 <div className="flex aspect-square w-full items-center justify-center rounded-lg border border-dashed">
                   <div className="text-center">
-                    <Image className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <Image className="mx-auto h-12 w-12 text-muted-foreground" alt="" />
                     <p className="mt-2 text-sm text-muted-foreground">
                       Generated images will appear here
                     </p>
